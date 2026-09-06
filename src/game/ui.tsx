@@ -27,12 +27,12 @@ type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export function Button({ variant = "primary", size = "md", className, ...props }: BtnProps) {
   const base =
-    "inline-flex w-full items-center justify-center gap-2 rounded-2xl font-semibold tracking-tight transition-all duration-300 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40";
+    "inline-flex w-full items-center justify-center gap-2 rounded-2xl font-bold uppercase tracking-wide transition-all duration-300 active:scale-95 disabled:pointer-events-none disabled:opacity-40";
   const sizes = { md: "px-5 py-3 text-sm", lg: "px-6 py-4 text-base" };
   const variants = {
     primary: "gradient-primary text-primary-foreground glow hover:brightness-110",
-    danger: "gradient-danger text-destructive-foreground hover:brightness-110",
-    success: "gradient-success text-success-foreground hover:brightness-110",
+    danger: "gradient-danger text-destructive-foreground glow-danger hover:brightness-110",
+    success: "gradient-success text-success-foreground glow-success hover:brightness-110",
     outline: "glass text-foreground hover:bg-white/10",
     ghost: "text-muted-foreground hover:text-foreground",
   };
@@ -47,7 +47,9 @@ export function Title({ eyebrow, children }: { eyebrow?: string; children: React
           {eyebrow}
         </p>
       )}
-      <h1 className="text-3xl font-bold leading-tight tracking-tight text-gradient">{children}</h1>
+      <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-foreground">
+        {children}
+      </h1>
     </div>
   );
 }
