@@ -4,10 +4,16 @@ import { CHARLIE_KIRK } from "./words/charliekirk";
 import { CIBO } from "./words/cibo";
 import { CINEMA } from "./words/cinema";
 import { CLASSICHE } from "./words/classiche";
+import { FILM } from "./words/film";
+import { GEOGRAFIA } from "./words/geografia";
+import { IDEE } from "./words/idee";
 import { MEME } from "./words/meme";
+import { MODA } from "./words/moda";
 import { MUSICA } from "./words/musica";
+import { POLITICI } from "./words/politici";
 import { SCUOLA } from "./words/scuola";
 import { SERIE_TV } from "./words/serietv";
+import { SPORT } from "./words/sport";
 import { STORIA } from "./words/storia";
 import { TECNOLOGIA } from "./words/tecnologia";
 import { VIAGGI } from "./words/viaggi";
@@ -27,7 +33,13 @@ export type Category =
   | "Viaggi"
   | "Serie TV"
   | "Storia"
-  | "Scuola e Lavoro";
+  | "Scuola e Lavoro"
+  | "Film"
+  | "Esponenti Politici"
+  | "Idee Politiche"
+  | "Sport"
+  | "Geografia"
+  | "Moda";
 
 export interface WordEntry {
   categoria: Category;
@@ -54,6 +66,12 @@ const SOURCES: [Category, [string, string][]][] = [
   ["Serie TV", SERIE_TV],
   ["Storia", STORIA],
   ["Scuola e Lavoro", SCUOLA],
+  ["Film", FILM],
+  ["Esponenti Politici", POLITICI],
+  ["Idee Politiche", IDEE],
+  ["Sport", SPORT],
+  ["Geografia", GEOGRAFIA],
+  ["Moda", MODA],
 ];
 
 export const CATEGORIES: Category[] = SOURCES.map(([c]) => c);
