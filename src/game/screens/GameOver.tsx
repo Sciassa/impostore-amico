@@ -1,5 +1,6 @@
 import { Crown, Skull } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect } from "react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
 
@@ -7,6 +8,36 @@ export function GameOver() {
   const { ending, word, players, playAgain, newGame } = useGame();
   if (!ending) return null;
   const civils = ending.winner === "civili";
+
+  useEffect(() => {
+    import("canvas-confetti").then((mod) => {
+      const confetti = mod.default;
+      const colors = civils
+        ? ["#34d399", "#22d3ee", "#a7f3d0"]
+        : ["#a855f7", "#d946ef", "#1f2937", "#7c3aed"];
+      const end = Date.now() + 1200;
+      const frame = () => {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors,
+          disableForReducedMotion: true,
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors,
+          disableForReducedMotion: true,
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      };
+      frame();
+    });
+  }, [civils]);
 
   return (
     <Screen className="justify-center text-center">
