@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Eye, Fingerprint, Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
-import { Button, Panel, Screen, Title } from "../ui";
+import { Button, Screen, Title } from "../ui";
 
 export function Reveal() {
   const { revealPlayer, revealIndex, players, word, nextReveal, impostorNames } = useGame();
