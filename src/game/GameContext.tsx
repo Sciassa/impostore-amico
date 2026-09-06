@@ -309,14 +309,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const resolveRevenge = useCallback((guess: string) => {
+  const resolveRevenge = useCallback((guess: string, kind: "spia" | "parola" = "parola") => {
     set((prev) => {
       const id = prev.revengeId;
       if (!id) return prev;
       const spy = prev.players.find((p) => p.role === "spia");
-      const success = spy
-        ? guess === spy.id
-        : normalize(guess) === normalize(prev.word?.parola_esatta ?? "");
+      const success =
+        kind === "spia"
+          ? !!spy && guess === spy.id
+          : normalize(guess) === normalize(prev.word?.parola_esatta ?? "");
 
       if (success) {
         return {
