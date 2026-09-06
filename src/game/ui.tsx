@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 interface ScreenProps {
   children: ReactNode;
   className?: string;
-  initial?: object;
-  animate?: object;
-  exit?: object;
-  transition?: object;
+  initial?: Record<string, unknown>;
+  animate?: Record<string, unknown>;
+  exit?: Record<string, unknown>;
+  transition?: Record<string, unknown>;
 }
 
 export function Screen({ children, className, initial, animate, exit, transition }: ScreenProps) {
