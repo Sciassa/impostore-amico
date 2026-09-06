@@ -35,7 +35,7 @@ export function weightedPick(weights: number[]): number {
   if (total <= 0) return 0;
   let r = Math.random() * total;
   for (let i = 0; i < weights.length; i++) {
-    r -= Math.max(0, weights[i]);
+    r -= Math.max(0, weights[i] ?? 0);
     if (r < 0) return i;
   }
   return weights.length - 1;
@@ -45,7 +45,7 @@ export function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    [a[i], a[j]] = [a[j] as T, a[i] as T];
   }
   return a;
 }
@@ -53,7 +53,7 @@ export function shuffle<T>(arr: T[]): T[] {
 export function pickWord(categories: Category[]): WordEntry {
   const pool = WORDS.filter((w) => categories.includes(w.categoria));
   const list = pool.length > 0 ? pool : WORDS;
-  return list[Math.floor(Math.random() * list.length)];
+  return list[Math.floor(Math.random() * list.length)] as WordEntry;
 }
 
 /** Guardrail: con la Spia attiva, gli impostori non possono superare questo numero. */
@@ -92,7 +92,7 @@ export function buildRound(
   });
   if (spyActive) {
     const civilians = order.filter((p) => roles.get(p.id) === "civile");
-    if (civilians.length > 0) roles.set(civilians[0].id, "spia");
+    if (civilians[0]) roles.set(civilians[0].id, "spia");
   }
 
   return {
