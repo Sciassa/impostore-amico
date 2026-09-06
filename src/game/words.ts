@@ -1,4 +1,5 @@
 import { ANIMALI } from "./words/animali";
+import { ANIME } from "./words/anime";
 import { CALCIO } from "./words/calcio";
 import { CHARLIE_KIRK } from "./words/charliekirk";
 import { CIBO } from "./words/cibo";
@@ -7,7 +8,9 @@ import { CLASSICHE } from "./words/classiche";
 import { FILM } from "./words/film";
 import { GEOGRAFIA } from "./words/geografia";
 import { IDEE } from "./words/idee";
+import { MEDICINA } from "./words/medicina";
 import { MEME } from "./words/meme";
+import { MITOLOGIA } from "./words/mitologia";
 import { MODA } from "./words/moda";
 import { MUSICA } from "./words/musica";
 import { POLITICI } from "./words/politici";
@@ -39,7 +42,10 @@ export type Category =
   | "Idee Politiche"
   | "Sport"
   | "Geografia"
-  | "Moda";
+  | "Moda"
+  | "Medicina"
+  | "Mitologia"
+  | "Anime & Manga";
 
 export interface WordEntry {
   categoria: Category;
@@ -72,6 +78,9 @@ const SOURCES: [Category, [string, string][]][] = [
   ["Sport", SPORT],
   ["Geografia", GEOGRAFIA],
   ["Moda", MODA],
+  ["Medicina", MEDICINA],
+  ["Mitologia", MITOLOGIA],
+  ["Anime & Manga", ANIME],
 ];
 
 export const CATEGORIES: Category[] = SOURCES.map(([c]) => c);

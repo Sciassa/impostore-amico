@@ -1,4 +1,5 @@
 import { Flame } from "lucide-react";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
 import { Button, Screen, Title } from "../ui";
@@ -24,14 +25,18 @@ export function Revenge() {
 
       {spyInGame ? (
         <div className="space-y-2">
-          {targets.map((p) => (
-            <button
+          {targets.map((p, i) => (
+            <motion.button
               key={p.id}
+              initial={{ opacity: 0, y: 16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ delay: i * 0.05, duration: 0.35, type: "spring", stiffness: 380, damping: 24 }}
               onClick={() => resolveRevenge(p.id)}
-              className="glass w-full rounded-2xl px-5 py-4 text-left text-base font-semibold transition hover:bg-white/10 active:scale-[0.98]"
+              className="glass w-full rounded-2xl px-5 py-4 text-left text-base font-semibold transition hover:bg-white/10"
             >
               {p.name}
-            </button>
+            </motion.button>
           ))}
         </div>
       ) : (
