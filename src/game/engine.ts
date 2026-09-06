@@ -81,6 +81,7 @@ export function buildRound(
   // Guardrail matematico sulla Spia (silenzioso).
   const spyActive =
     config.spyEnabled &&
+    impostorTotal >= 1 && // senza impostori la Spia rivelerebbe subito che sono tutti civili
     impostorTotal <= spyMaxImpostors(total) &&
     total - impostorTotal >= 1;
 
