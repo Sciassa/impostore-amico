@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Eye, Fingerprint, Smartphone } from "lucide-react";
+import { Eye, Fingerprint, ShieldCheck, Skull, Smartphone, VenetianMask } from "lucide-react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
 import { Button, Screen, Title } from "../ui";

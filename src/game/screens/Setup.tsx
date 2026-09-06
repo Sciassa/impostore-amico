@@ -150,12 +150,27 @@ export function Setup() {
           checked={config.spyEnabled}
           onChange={() => setConfig({ spyEnabled: !config.spyEnabled })}
           label="La Spia"
-          hint="Conosce la parola e i nomi degli impostori"
+          hint="Conosce la parola e i nomi degli impostori · Consigliata con 5+ giocatori"
         />
         <div className="pt-1">
-          <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            <Eye className="h-3.5 w-3.5" /> Categorie
-          </p>
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <Eye className="h-3.5 w-3.5" /> Categorie
+            </p>
+            <button
+              onClick={() =>
+                setConfig({
+                  categories:
+                    config.categories.length === CATEGORIES.length ? [] : [...CATEGORIES],
+                })
+              }
+              className="text-xs font-semibold text-primary transition hover:brightness-125"
+            >
+              {config.categories.length === CATEGORIES.length
+                ? "Deseleziona tutto"
+                : "Seleziona tutto"}
+            </button>
+          </div>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((c) => {
               const on = config.categories.includes(c);
