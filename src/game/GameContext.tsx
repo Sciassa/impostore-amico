@@ -338,6 +338,23 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const players = prev.players.map((p) => (p.id === id ? { ...p, alive: false } : p));
       const impostorsKilled = prev.impostorsKilled + 1;
 
+      // Fallire la caccia alla Spia è fatale: gli impostori perdono subito.
+      if (kind === "spia") {
+        return {
+          ...prev,
+          players,
+          impostorsKilled,
+          revengeId: null,
+          phase: "over",
+          ending: {
+            winner: "civili",
+            title: "Vincono i Civili",
+            subtitle: "L'impostore ha puntato sulla persona sbagliata: la caccia alla Spia è fallita.",
+          },
+        };
+      }
+
+
       if (prev.config.mode === "fisso" && impostorsKilled >= prev.impostorTotal) {
         return {
           ...prev,

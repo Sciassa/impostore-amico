@@ -22,10 +22,10 @@ export function Revenge() {
       <Title eyebrow="Smascherato">{impostor.name}, La Vendetta</Title>
       <p className="-mt-3 text-sm text-muted-foreground">
         {choice === null
-          ? "Scegli una sola via: smascherare La Spia oppure indovinare la parola segreta. Hai un solo tentativo."
+          ? "Scegli una sola via: smascherare La Spia (rischioso: se sbagli, gli impostori perdono subito) oppure indovinare la parola segreta (se sbagli, esci tu e si va avanti)."
           : choice === "spia"
-            ? "Indica chi credi sia La Spia. Se indovini, gli impostori vincono."
-            : "Scrivi la parola segreta. Se indovini, gli impostori vincono."}
+            ? "Indica chi credi sia La Spia. Se indovini, gli impostori vincono. Se sbagli, la partita finisce: vincono i civili."
+            : "Scrivi la parola segreta. Se indovini, gli impostori vincono; se sbagli, vieni eliminato e il gioco continua."}
       </p>
 
       {choice === null ? (
