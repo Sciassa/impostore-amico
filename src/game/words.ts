@@ -78,6 +78,9 @@ const SOURCES: [Category, [string, string][]][] = [
   ["Sport", SPORT],
   ["Geografia", GEOGRAFIA],
   ["Moda", MODA],
+  ["Medicina", MEDICINA],
+  ["Mitologia", MITOLOGIA],
+  ["Anime & Manga", ANIME],
 ];
 
 export const CATEGORIES: Category[] = SOURCES.map(([c]) => c);
