@@ -73,7 +73,7 @@ export function Revenge() {
         </div>
       )}
 
-      {spyInGame && choice !== null && (
+      {spyOption && choice !== null && (
         <Button variant="ghost" onClick={() => setChoice(null)}>
           Cambia via
         </Button>
