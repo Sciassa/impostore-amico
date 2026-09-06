@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Eye, Fingerprint, Smartphone } from "lucide-react";
+import { Eye, Fingerprint, ShieldCheck, Skull, Smartphone, VenetianMask } from "lucide-react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
 import { Button, Screen, Title } from "../ui";
@@ -89,37 +89,45 @@ export function Reveal() {
                   initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
                   animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  className="space-y-3"
+                  className="flex w-full flex-col items-center gap-4"
                 >
                   {revealPlayer.role === "impostore" ? (
                     <>
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-destructive">
-                        Sei l'Impostore
-                      </p>
-                      <p className="text-3xl font-bold">{word.suggerimento_vago}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-destructive/50 bg-destructive/15 px-5 py-2 text-base font-extrabold uppercase tracking-[0.18em] text-destructive">
+                        <Skull className="h-5 w-5" /> Sei l'Impostore
+                      </span>
+                      <p className="text-4xl font-extrabold leading-tight">{word.suggerimento_vago}</p>
+                      <p className="text-sm text-muted-foreground">
                         È solo un indizio vago. Non conosci gli altri impostori.
                       </p>
                     </>
                   ) : revealPlayer.role === "spia" ? (
                     <>
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
-                        Sei La Spia
+                      <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/50 bg-amber-400/10 px-5 py-2 text-base font-extrabold uppercase tracking-[0.18em] text-amber-300">
+                        <VenetianMask className="h-5 w-5" /> Agente Segreto
+                      </span>
+                      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        Dossier classificato
                       </p>
-                      <p className="text-3xl font-bold">{word.parola_esatta}</p>
-                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                        Impostori
-                      </p>
-                      <p className="text-lg font-semibold text-destructive">
-                        {impostorNames.length ? impostorNames.join(" · ") : "Nessuno"}
-                      </p>
+                      <p className="text-4xl font-extrabold leading-tight">{word.parola_esatta}</p>
+                      <div className="w-full rounded-2xl border border-destructive/40 bg-destructive/10 px-4 py-3">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-destructive">
+                          Obiettivi · Impostori
+                        </p>
+                        <p className="mt-1 text-xl font-bold text-destructive">
+                          {impostorNames.length ? impostorNames.join(" · ") : "Nessuno"}
+                        </p>
+                      </div>
                     </>
                   ) : (
                     <>
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-success">
-                        Sei un Civile
+                      <span className="inline-flex items-center gap-2 rounded-full border border-success/50 bg-success/15 px-5 py-2 text-base font-extrabold uppercase tracking-[0.18em] text-success">
+                        <ShieldCheck className="h-5 w-5" /> Sei un Civile
+                      </span>
+                      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        Parola segreta
                       </p>
-                      <p className="text-3xl font-bold">{word.parola_esatta}</p>
+                      <p className="text-4xl font-extrabold leading-tight">{word.parola_esatta}</p>
                     </>
                   )}
                 </motion.div>
