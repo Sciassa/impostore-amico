@@ -2,13 +2,22 @@ import { motion } from "motion/react";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export function Screen({ children, className }: { children: ReactNode; className?: string }) {
+interface ScreenProps {
+  children: ReactNode;
+  className?: string;
+  initial?: object;
+  animate?: object;
+  exit?: object;
+  transition?: object;
+}
+
+export function Screen({ children, className, initial, animate, exit, transition }: ScreenProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      exit={{ opacity: 0, y: -14, filter: "blur(8px)" }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      initial={initial ?? { opacity: 0, y: 24, scale: 0.98, filter: "blur(10px)" }}
+      animate={animate ?? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      exit={exit ?? { opacity: 0, y: -18, scale: 1.02, filter: "blur(10px)" }}
+      transition={transition ?? { duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={cn("mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-5 py-8", className)}
     >
       {children}
