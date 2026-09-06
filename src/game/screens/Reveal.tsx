@@ -68,14 +68,16 @@ export function Reveal() {
               onTouchEnd={() => setHolding(false)}
               onTouchCancel={() => setHolding(false)}
               onContextMenu={(e) => e.preventDefault()}
-              className="glass relative flex min-h-64 select-none items-center justify-center rounded-3xl p-6 text-center"
+              className={`glass relative flex min-h-64 select-none items-center justify-center rounded-3xl p-6 text-center transition-shadow duration-500 ${
+                holding ? "glow border-white/25" : ""
+              }`}
               style={{ WebkitUserSelect: "none", userSelect: "none", touchAction: "none" }}
             >
               {holding ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.94 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.12 }}
+                  initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
+                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                   className="space-y-3"
                 >
                   {revealPlayer.role === "impostore" ? (
@@ -112,7 +114,7 @@ export function Reveal() {
                 </motion.div>
               ) : (
                 <div className="space-y-3 text-muted-foreground">
-                  <Fingerprint className="mx-auto h-10 w-10 animate-pulse text-primary" />
+                  <Fingerprint className="mx-auto h-10 w-10 animate-pulse text-primary drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
                   <p className="text-sm">Tieni premuto qui</p>
                   <p className="text-xs">Al rilascio il testo sparisce all'istante</p>
                 </div>
