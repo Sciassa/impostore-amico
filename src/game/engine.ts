@@ -56,9 +56,12 @@ export function pickWord(categories: Category[]): WordEntry {
   return list[Math.floor(Math.random() * list.length)] as WordEntry;
 }
 
-/** Guardrail: con la Spia attiva, gli impostori non possono superare questo numero. */
+/**
+ * Guardrail: con la Spia attiva devono restare almeno 2 civili puri al tavolo,
+ * quindi impostori ≤ totale − 3 (Spia + 2 civili).
+ */
 export function spyMaxImpostors(totalPlayers: number): number {
-  return Math.floor(totalPlayers / 2) - 1;
+  return Math.max(0, totalPlayers - 3);
 }
 
 export interface RoundSetup {
