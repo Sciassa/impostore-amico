@@ -67,7 +67,7 @@ interface GameApi extends GameState {
   startVoting: () => void;
   votePlayer: (id: string) => void;
   voteAllSafe: () => void;
-  resolveRevenge: (guess: string) => void;
+  resolveRevenge: (guess: string, kind?: "spia" | "parola") => void;
   dismissFeedback: () => void;
   playAgain: () => void;
   newGame: () => void;
@@ -309,14 +309,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const resolveRevenge = useCallback((guess: string) => {
+  const resolveRevenge = useCallback((guess: string, kind: "spia" | "parola" = "parola") => {
     set((prev) => {
       const id = prev.revengeId;
       if (!id) return prev;
       const spy = prev.players.find((p) => p.role === "spia");
-      const success = spy
-        ? guess === spy.id
-        : normalize(guess) === normalize(prev.word?.parola_esatta ?? "");
+      const success =
+        kind === "spia"
+          ? !!spy && guess === spy.id
+          : normalize(guess) === normalize(prev.word?.parola_esatta ?? "");
 
       if (success) {
         return {
@@ -326,9 +327,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
           ending: {
             winner: "impostori",
             title: "La Vendetta è riuscita",
-            subtitle: spy
-              ? "L'impostore smascherato ha individuato la Spia."
-              : "L'impostore smascherato ha indovinato la parola segreta.",
+            subtitle:
+              kind === "spia"
+                ? "L'impostore smascherato ha individuato la Spia."
+                : "L'impostore smascherato ha indovinato la parola segreta.",
           },
         };
       }
