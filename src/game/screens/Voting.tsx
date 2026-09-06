@@ -4,7 +4,7 @@ import { useGame } from "../GameContext";
 import { Button, Screen, Title } from "../ui";
 
 export function Voting() {
-  const { alivePlayers, votePlayer, voteAllSafe, config, errors } = useGame();
+  const { alivePlayers, votePlayer, voteAllSafe, config, errors, votingRound } = useGame();
 
   return (
     <Screen>
@@ -12,6 +12,11 @@ export function Voting() {
       <Title eyebrow={`Errori ${errors} / 2`}>Chi è l'impostore?</Title>
       <p className="-mt-3 text-sm text-muted-foreground">
         Votate all'unanimità e toccate il nome scelto.
+        {config.mode === "casuale" && votingRound === 0 && (
+          <span className="mt-1 block text-xs text-emerald-300/80">
+            Attenzione: TUTTI SAFE al primo giro fa vincere la coalizione in minoranza.
+          </span>
+        )}
       </p>
 
       <div className="space-y-2">
