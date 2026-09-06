@@ -5,12 +5,14 @@ import { useGame } from "../GameContext";
 import { Button, Screen, Title } from "../ui";
 
 export function Revenge() {
-  const { players, revengeId, resolveRevenge } = useGame();
+  const { players, revengeId, resolveRevenge, config } = useGame();
   const [guess, setGuess] = useState("");
   const impostor = players.find((p) => p.id === revengeId);
-  const spyInGame = players.some((p) => p.role === "spia");
+  // La scelta dipende dal toggle, NON dalla presenza reale della Spia:
+  // altrimenti l'impostore capirebbe che gli impostori sono in maggioranza.
+  const spyOption = config.spyEnabled;
   const targets = players.filter((p) => p.id !== revengeId);
-  const [choice, setChoice] = useState<"spia" | "parola" | null>(spyInGame ? null : "parola");
+  const [choice, setChoice] = useState<"spia" | "parola" | null>(spyOption ? null : "parola");
 
   if (!impostor) return null;
 
@@ -71,7 +73,7 @@ export function Revenge() {
         </div>
       )}
 
-      {spyInGame && choice !== null && (
+      {spyOption && choice !== null && (
         <Button variant="ghost" onClick={() => setChoice(null)}>
           Cambia via
         </Button>
