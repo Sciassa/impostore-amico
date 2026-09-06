@@ -344,6 +344,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     addPlayer,
     removePlayer,
     setConfig,
+    setWeight,
     setMode,
     toggleCategory,
     goSetup,
