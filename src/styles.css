@@ -63,24 +63,24 @@
 
 :root {
   --radius: 1.25rem;
-  --background: oklch(0.16 0.045 285);
-  --foreground: oklch(0.97 0.01 285);
+  --background: oklch(0.09 0.02 290);
+  --foreground: oklch(0.99 0 0);
   --card: oklch(0.24 0.05 285 / 55%);
-  --card-foreground: oklch(0.97 0.01 285);
-  --popover: oklch(0.2 0.05 285);
-  --popover-foreground: oklch(0.97 0.01 285);
-  --primary: oklch(0.68 0.2 300);
-  --primary-foreground: oklch(0.15 0.04 285);
+  --card-foreground: oklch(0.99 0 0);
+  --popover: oklch(0.16 0.04 285);
+  --popover-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.64 0.25 305);
+  --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.3 0.06 280 / 60%);
-  --secondary-foreground: oklch(0.97 0.01 285);
+  --secondary-foreground: oklch(0.99 0 0);
   --muted: oklch(0.3 0.05 280 / 45%);
-  --muted-foreground: oklch(0.75 0.03 285);
-  --accent: oklch(0.7 0.16 245);
-  --accent-foreground: oklch(0.15 0.04 285);
-  --destructive: oklch(0.62 0.23 20);
-  --destructive-foreground: oklch(0.98 0.01 20);
-  --success: oklch(0.72 0.17 160);
-  --success-foreground: oklch(0.15 0.04 285);
+  --muted-foreground: oklch(0.72 0.02 285);
+  --accent: oklch(0.75 0.15 220);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.63 0.24 20);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success: oklch(0.74 0.19 165);
+  --success-foreground: oklch(0.99 0 0);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 14%);
   --ring: oklch(0.68 0.2 300);
@@ -99,28 +99,41 @@
   --sidebar-ring: oklch(0.68 0.2 300);
 
   --gradient-night: radial-gradient(
-      120% 90% at 15% 0%,
-      oklch(0.35 0.16 300 / 55%) 0%,
-      transparent 60%
+      120% 100% at 50% 30%,
+      oklch(0.22 0.09 290) 0%,
+      oklch(0.14 0.05 285) 45%,
+      oklch(0.06 0.01 285) 100%
     ),
-    radial-gradient(100% 80% at 85% 10%, oklch(0.32 0.15 255 / 50%) 0%, transparent 65%),
-    radial-gradient(120% 100% at 50% 110%, oklch(0.28 0.12 320 / 45%) 0%, transparent 70%);
+    radial-gradient(90% 60% at 85% 0%, oklch(0.3 0.14 300 / 40%) 0%, transparent 70%),
+    radial-gradient(80% 55% at 10% 100%, oklch(0.28 0.12 260 / 35%) 0%, transparent 70%);
   --gradient-primary: linear-gradient(
     135deg,
-    oklch(0.68 0.2 300),
-    oklch(0.66 0.18 258)
+    oklch(0.62 0.26 295),
+    oklch(0.66 0.27 340)
   );
-  --gradient-danger: linear-gradient(135deg, oklch(0.62 0.23 20), oklch(0.55 0.2 350));
-  --gradient-success: linear-gradient(135deg, oklch(0.72 0.17 160), oklch(0.7 0.16 200));
-  --glass-bg: oklch(0.99 0.02 300 / 7%);
-  --glass-border: oklch(1 0 0 / 14%);
-  --shadow-glow: 0 24px 60px -22px oklch(0.68 0.2 300 / 65%);
+  --gradient-danger: linear-gradient(135deg, oklch(0.62 0.24 15), oklch(0.58 0.24 350));
+  --gradient-success: linear-gradient(135deg, oklch(0.72 0.19 165), oklch(0.75 0.15 210));
+  --glass-bg: oklch(1 0 0 / 5%);
+  --glass-border: oklch(1 0 0 / 10%);
+  --shadow-glow:
+    0 0 18px oklch(0.64 0.26 305 / 50%),
+    0 10px 34px -12px oklch(0.64 0.26 305 / 55%);
+  --shadow-glow-danger:
+    0 0 16px oklch(0.62 0.24 15 / 45%),
+    0 10px 30px -12px oklch(0.62 0.24 15 / 50%);
+  --shadow-glow-success:
+    0 0 16px oklch(0.74 0.19 165 / 45%),
+    0 10px 30px -12px oklch(0.74 0.19 165 / 50%);
   --shadow-soft: 0 18px 44px -24px oklch(0 0 0 / 85%);
 }
 
 @theme inline {
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
@@ -138,6 +151,8 @@
     background-image: var(--gradient-night);
     background-attachment: fixed;
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
 }
@@ -145,7 +160,7 @@
 @utility glass {
   background-color: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
   box-shadow: var(--shadow-soft);
 }
 
@@ -169,5 +184,13 @@
 
 @utility glow {
   box-shadow: var(--shadow-glow);
+}
+
+@utility glow-danger {
+  box-shadow: var(--shadow-glow-danger);
+}
+
+@utility glow-success {
+  box-shadow: var(--shadow-glow-success);
 }
 
