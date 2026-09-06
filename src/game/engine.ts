@@ -152,25 +152,23 @@ export function rebalanceWeights(weights: number[], index: number, value: number
       if (rest > 0) rest--;
     }
   } else {
+    // Ripartizione proporzionale con metodo del resto più grande:
+    // nessun indice viene favorito dagli arrotondamenti.
+    const exact: { idx: number; frac: number }[] = [];
     let acc = 0;
-    let lastIdx = -1;
     for (let i = 0; i < len; i++) {
       if (i === index) continue;
-      const share = Math.floor(((others[i] ?? 0) / otherSum) * remaining);
+      const raw = ((others[i] ?? 0) / otherSum) * remaining;
+      const share = Math.floor(raw);
       next[i] = share;
       acc += share;
-      lastIdx = i;
+      exact.push({ idx: i, frac: raw - share });
     }
+    exact.sort((a, b) => b.frac - a.frac);
     let rest = remaining - acc;
-    let i = 0;
-    while (rest > 0) {
-      const idx = i % len;
-      if (idx !== index && ((others[idx] ?? 0) > 0 || idx === lastIdx)) {
-        next[idx] = (next[idx] ?? 0) + 1;
-        rest--;
-      }
-      i++;
-      if (i > len * 200) break;
+    for (let k = 0; k < exact.length && rest > 0; k++, rest--) {
+      const idx = exact[k]!.idx;
+      next[idx] = (next[idx] ?? 0) + 1;
     }
   }
   return next;
