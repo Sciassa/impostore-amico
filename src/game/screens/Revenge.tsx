@@ -1,4 +1,5 @@
 import { Flame } from "lucide-react";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
 import { Button, Screen, Title } from "../ui";
