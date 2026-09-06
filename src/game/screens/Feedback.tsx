@@ -9,7 +9,11 @@ export function FeedbackScreen() {
   const bad = feedback.tone === "bad";
 
   return (
-    <Screen className="justify-center text-center">
+    <Screen
+      className="justify-center text-center"
+      animate={bad ? { x: [0, -8, 8, -6, 6, 0] } : { x: 0 }}
+      transition={{ duration: 0.45 }}
+    >
       <motion.div
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
