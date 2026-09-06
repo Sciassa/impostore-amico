@@ -30,10 +30,9 @@ function Toggle({
         }`}
       >
         <motion.span
-          layout
+          animate={{ x: checked ? 22 : 2 }}
           transition={{ type: "spring", stiffness: 500, damping: 34 }}
-          className="absolute top-0.5 h-5 w-5 rounded-full bg-foreground shadow"
-          style={{ left: checked ? 22 : 2 }}
+          className="absolute left-0 top-0.5 h-5 w-5 rounded-full bg-foreground shadow"
         />
       </span>
     </button>
