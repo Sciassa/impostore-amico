@@ -68,11 +68,22 @@ export function Reveal() {
               onTouchEnd={() => setHolding(false)}
               onTouchCancel={() => setHolding(false)}
               onContextMenu={(e) => e.preventDefault()}
-              className={`glass relative flex min-h-64 select-none items-center justify-center rounded-3xl p-6 text-center transition-shadow duration-500 ${
+              className={`glass relative flex min-h-64 select-none items-center justify-center overflow-hidden rounded-3xl p-6 text-center transition-shadow duration-500 ${
                 holding ? "glow border-white/25" : ""
               }`}
               style={{ WebkitUserSelect: "none", userSelect: "none", touchAction: "none" }}
             >
+              <AnimatePresence>
+                {holding && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1.35 }}
+                    exit={{ opacity: 0, scale: 1.5 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-tr from-primary/30 via-fuchsia-500/20 to-transparent blur-2xl"
+                  />
+                )}
+              </AnimatePresence>
               {holding ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
