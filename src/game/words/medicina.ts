@@ -198,12 +198,5 @@ export const MEDICINA: [string, string][] = [
   ["Cartilagine", "Gomma"],
   ["Tendine", "Corda"],
   ["Legamento", "Legame"],
-  ["Menisco", "Cuscinetto"],
-  ["Femore", "Lunghezza"],
-  ["Vertebra", "Anello"],
-  ["Costola", "Protezione"],
-  ["Clavicola", "Chiave"],
-  ["Scapola", "Ala"],
-  ["Bacino", "Culla"],
-  ["Utero", "Origine"]
+  ["Menisco", "Cuscinetto"]
 ];
