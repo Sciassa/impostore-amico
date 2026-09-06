@@ -114,3 +114,64 @@ export const normalize = (s: string) =>
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, "");
+
+/** Distribuzione iniziale (percentuali, somma 100) sui possibili numeri di impostori. */
+export function defaultWeights(n: number): number[] {
+  const len = n + 1;
+  const base = Math.floor(100 / len);
+  const w = Array.from({ length: len }, () => base);
+  let rest = 100 - base * len;
+  for (let i = 1; i < len && rest > 0; i++, rest--) w[i] = (w[i] ?? 0) + 1;
+  if (rest > 0) w[0] = (w[0] ?? 0) + rest;
+  return w;
+}
+
+/**
+ * Imposta il peso all'indice `index` e riadatta gli altri
+ * in modo proporzionale così che la somma resti sempre 100.
+ */
+export function rebalanceWeights(weights: number[], index: number, value: number): number[] {
+  const len = weights.length;
+  if (len === 0) return weights;
+  const v = Math.min(100, Math.max(0, Math.round(value)));
+  if (len === 1) return [100];
+
+  const others = weights.map((w, i) => (i === index ? 0 : Math.max(0, w || 0)));
+  const otherSum = others.reduce((a, b) => a + b, 0);
+  const remaining = 100 - v;
+
+  const next = new Array<number>(len).fill(0);
+  next[index] = v;
+
+  if (otherSum <= 0) {
+    const each = Math.floor(remaining / (len - 1));
+    let rest = remaining - each * (len - 1);
+    for (let i = 0; i < len; i++) {
+      if (i === index) continue;
+      next[i] = each + (rest > 0 ? 1 : 0);
+      if (rest > 0) rest--;
+    }
+  } else {
+    let acc = 0;
+    let lastIdx = -1;
+    for (let i = 0; i < len; i++) {
+      if (i === index) continue;
+      const share = Math.floor(((others[i] ?? 0) / otherSum) * remaining);
+      next[i] = share;
+      acc += share;
+      lastIdx = i;
+    }
+    let rest = remaining - acc;
+    let i = 0;
+    while (rest > 0) {
+      const idx = i % len;
+      if (idx !== index && ((others[idx] ?? 0) > 0 || idx === lastIdx)) {
+        next[idx] = (next[idx] ?? 0) + 1;
+        rest--;
+      }
+      i++;
+      if (i > len * 200) break;
+    }
+  }
+  return next;
+}
