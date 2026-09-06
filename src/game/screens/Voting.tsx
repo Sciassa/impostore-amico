@@ -23,11 +23,12 @@ export function Voting() {
         {alivePlayers.map((p, i) => (
           <motion.button
             key={p.id}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.04, duration: 0.3 }}
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ delay: i * 0.05, duration: 0.35, type: "spring", stiffness: 380, damping: 24 }}
             onClick={() => votePlayer(p.id)}
-            className="glass w-full rounded-2xl px-5 py-4 text-left text-base font-semibold transition hover:bg-white/10 active:scale-[0.98]"
+            className="glass w-full rounded-2xl px-5 py-4 text-left text-base font-semibold transition hover:bg-white/10"
           >
             {p.name}
           </motion.button>
@@ -36,7 +37,7 @@ export function Voting() {
 
       {config.mode === "casuale" && (
         <Button size="lg" variant="success" onClick={voteAllSafe}>
-          <ShieldCheck className="h-5 w-5" /> TUTTI SAFE
+          <ShieldCheck className="h-5 w-5 animate-pulse" /> TUTTI SAFE
         </Button>
       )}
     </Screen>
