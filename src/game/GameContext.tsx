@@ -2,13 +2,16 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import {
   buildRound,
   defaultConfig,
+  defaultWeights,
   normalize,
+  rebalanceWeights,
   uid,
   type GameConfig,
   type Mode,
   type Player,
 } from "./engine";
 import type { Category, WordEntry } from "./words";
+
 
 export type Phase =
   | "lobby"
