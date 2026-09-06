@@ -2,13 +2,16 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import {
   buildRound,
   defaultConfig,
+  defaultWeights,
   normalize,
+  rebalanceWeights,
   uid,
   type GameConfig,
   type Mode,
   type Player,
 } from "./engine";
 import type { Category, WordEntry } from "./words";
+
 
 export type Phase =
   | "lobby"
@@ -46,12 +49,14 @@ interface GameState {
   feedback: Feedback | null;
   ending: Ending | null;
   revengeId: string | null;
+  starterName: string | null;
 }
 
 interface GameApi extends GameState {
   addPlayer: (name: string) => void;
   removePlayer: (id: string) => void;
   setConfig: (patch: Partial<GameConfig>) => void;
+  setWeight: (index: number, value: number) => void;
   setMode: (m: Mode) => void;
   toggleCategory: (c: Category) => void;
   goSetup: () => void;
@@ -86,6 +91,7 @@ const initial = (): GameState => ({
   feedback: null,
   ending: null,
   revengeId: null,
+  starterName: null,
 });
 
 export function GameProvider({ children }: { children: ReactNode }) {
@@ -107,6 +113,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     set((prev) => ({ ...prev, config: { ...prev.config, ...p } }));
   }, []);
 
+  const setWeight = useCallback((index: number, value: number) => {
+    set((prev) => ({
+      ...prev,
+      config: { ...prev.config, weights: rebalanceWeights(prev.config.weights, index, value) },
+    }));
+  }, []);
+
   const setMode = useCallback((m: Mode) => setConfig({ mode: m }), [setConfig]);
 
   const toggleCategory = useCallback((c: Category) => {
@@ -122,7 +135,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const goSetup = useCallback(() => {
     set((prev) => {
       const n = prev.roster.length;
-      const weights = Array.from({ length: n + 1 }, (_, i) => prev.config.weights[i] ?? (i <= 2 ? 50 : 20));
+      const weights =
+        prev.config.weights.length === n + 1 &&
+        prev.config.weights.reduce((a, b) => a + Math.max(0, b || 0), 0) === 100
+          ? prev.config.weights
+          : defaultWeights(n);
       return {
         ...prev,
         phase: "setup",
@@ -140,6 +157,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const startGame = useCallback(() => {
     set((prev) => {
       const round = buildRound(prev.roster, prev.config);
+      const starter = round.players[Math.floor(Math.random() * round.players.length)];
       return {
         ...prev,
         ...round,
@@ -150,6 +168,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         feedback: null,
         ending: null,
         revengeId: null,
+        starterName: starter?.name ?? null,
       };
     });
   }, []);
