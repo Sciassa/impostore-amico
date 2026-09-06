@@ -327,9 +327,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
           ending: {
             winner: "impostori",
             title: "La Vendetta è riuscita",
-            subtitle: spy
-              ? "L'impostore smascherato ha individuato la Spia."
-              : "L'impostore smascherato ha indovinato la parola segreta.",
+            subtitle:
+              kind === "spia"
+                ? "L'impostore smascherato ha individuato la Spia."
+                : "L'impostore smascherato ha indovinato la parola segreta.",
           },
         };
       }
