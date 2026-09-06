@@ -67,7 +67,7 @@ interface GameApi extends GameState {
   startVoting: () => void;
   votePlayer: (id: string) => void;
   voteAllSafe: () => void;
-  resolveRevenge: (guess: string) => void;
+  resolveRevenge: (guess: string, kind?: "spia" | "parola") => void;
   dismissFeedback: () => void;
   playAgain: () => void;
   newGame: () => void;
