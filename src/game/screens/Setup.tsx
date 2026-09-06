@@ -40,16 +40,12 @@ function Toggle({
 }
 
 export function Setup() {
-  const { roster, config, setConfig, setMode, toggleCategory, goLobby, startGame } = useGame();
+  const { roster, config, setConfig, setWeight, setMode, toggleCategory, goLobby, startGame } =
+    useGame();
   const total = roster.length;
 
-  const setWeight = (i: number, v: number) => {
-    const weights = [...config.weights];
-    weights[i] = v;
-    setConfig({ weights });
-  };
-
   const sum = config.weights.reduce((a, b) => a + Math.max(0, b || 0), 0);
+
 
   return (
     <Screen>
