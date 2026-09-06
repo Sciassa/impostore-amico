@@ -111,28 +111,25 @@ export function Setup() {
       ) : (
         <Panel className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Peso di probabilità per ogni possibile numero di impostori. Nessuno saprà quanti ne sono
-            usciti.
+            Probabilità di estrazione per ogni possibile numero di impostori. Muovi una barra: le
+            altre si adattano da sole per restare al 100%.
           </p>
           <div className="space-y-4">
             {Array.from({ length: total + 1 }, (_, i) => {
-              const v = config.weights[i] ?? 0;
-              const pct = sum > 0 ? Math.round((Math.max(0, v) / sum) * 100) : 0;
+              const pct = Math.max(0, config.weights[i] ?? 0);
               return (
                 <div key={i} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-semibold">
                       {i} {i === 1 ? "impostore" : "impostori"}
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      peso {v} · {pct}%
-                    </span>
+                    <span className="text-xs font-semibold text-primary">{pct}%</span>
                   </div>
                   <input
                     type="range"
                     min={0}
                     max={100}
-                    value={v}
+                    value={pct}
                     onChange={(e) => setWeight(i, Number(e.target.value))}
                     className="h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-primary"
                   />
@@ -140,7 +137,12 @@ export function Setup() {
               );
             })}
           </div>
+          <div className="flex items-center justify-between border-t border-border pt-3 text-sm">
+            <span className="text-muted-foreground">Totale</span>
+            <span className="font-semibold">{sum}%</span>
+          </div>
         </Panel>
+
       )}
 
       <Panel className="space-y-3">
