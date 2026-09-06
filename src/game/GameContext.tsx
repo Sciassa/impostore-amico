@@ -50,6 +50,7 @@ interface GameState {
   ending: Ending | null;
   revengeId: string | null;
   starterName: string | null;
+  votingRound: number;
 }
 
 interface GameApi extends GameState {
@@ -92,6 +93,7 @@ const initial = (): GameState => ({
   ending: null,
   revengeId: null,
   starterName: null,
+  votingRound: 0,
 });
 
 export function GameProvider({ children }: { children: ReactNode }) {
@@ -169,6 +171,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         ending: null,
         revengeId: null,
         starterName: starter?.name ?? null,
+        votingRound: 0,
       };
     });
   }, []);
@@ -187,6 +190,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     set((prev) => {
       const target = prev.players.find((p) => p.id === id);
       if (!target) return prev;
+      prev = { ...prev, votingRound: prev.votingRound + 1 };
 
       const total = prev.players.length;
       const impostors = prev.players.filter((p) => p.role === "impostore").length;
@@ -252,6 +256,24 @@ export function GameProvider({ children }: { children: ReactNode }) {
     set((prev) => {
       const total = prev.players.length;
       const impostors = prev.players.filter((p) => p.role === "impostore").length;
+
+      // Regola del primo giro: TUTTI SAFE subito => vince la coalizione in minoranza.
+      if (prev.votingRound === 0 && total > 0 && impostors > 0 && impostors < total) {
+        const civili = total - impostors;
+        const winner: "impostori" | "civili" = impostors <= civili ? "impostori" : "civili";
+        return {
+          ...prev,
+          votingRound: 1,
+          phase: "over",
+          ending: {
+            winner,
+            title: winner === "impostori" ? "Vincono gli Impostori" : "Vincono i Civili",
+            subtitle:
+              "TUTTI SAFE al primo giro: vince la coalizione in minoranza. Niente accordi sottobanco.",
+          },
+        };
+      }
+
       if (total > 0 && impostors === total) {
         return {
           ...prev,
