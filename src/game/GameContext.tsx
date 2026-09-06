@@ -188,6 +188,33 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const target = prev.players.find((p) => p.id === id);
       if (!target) return prev;
 
+      const total = prev.players.length;
+      const impostors = prev.players.filter((p) => p.role === "impostore").length;
+
+      if (total > 0 && impostors === 0) {
+        return {
+          ...prev,
+          phase: "over",
+          ending: {
+            winner: "impostori",
+            title: "Nessun impostore in gioco",
+            subtitle: "Erano tutti civili: bastava votare TUTTI SAFE. Il gruppo ha perso.",
+          },
+        };
+      }
+
+      if (total > 0 && impostors === total) {
+        return {
+          ...prev,
+          phase: "over",
+          ending: {
+            winner: "impostori",
+            title: "Eravate tutti impostori",
+            subtitle: "Nessun civile al tavolo: bastava votare TUTTI SAFE. Il gruppo ha perso.",
+          },
+        };
+      }
+
       if (target.role === "impostore") {
         return { ...prev, phase: "revenge", revengeId: id };
       }
@@ -223,6 +250,19 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const voteAllSafe = useCallback(() => {
     set((prev) => {
+      const total = prev.players.length;
+      const impostors = prev.players.filter((p) => p.role === "impostore").length;
+      if (total > 0 && impostors === total) {
+        return {
+          ...prev,
+          phase: "over",
+          ending: {
+            winner: "civili",
+            title: "Chiamata perfetta",
+            subtitle: "Eravate tutti impostori e nessuno è stato eliminato: il gruppo si salva.",
+          },
+        };
+      }
       const impostorAlive = prev.players.some((p) => p.role === "impostore" && p.alive);
       if (impostorAlive) {
         return {
