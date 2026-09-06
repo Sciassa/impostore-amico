@@ -26,7 +26,7 @@ export const IDEE: [string, string][] = [
   ["Centro", "Equilibrio"],
   ["Radicalismo", "Digiuno"],
   ["Socialismo", "Sole"],
-  ["Comunismo falce", "Martello"],
+  ["Comunismo", "Falce"],
   ["Capitalismo", "Borsa"],
   ["Liberalismo", "Mercato"],
   ["Anarchia", "Caos"],
