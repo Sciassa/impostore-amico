@@ -197,6 +197,6 @@ export const MEDICINA: [string, string][] = [
   ["Piastrine", "Tappo"],
   ["Cartilagine", "Gomma"],
   ["Tendine", "Corda"],
-  ["Legamento", "Legame"],
+  ["Legamento", "Ginocchio"],
   ["Menisco", "Cuscinetto"]
 ];

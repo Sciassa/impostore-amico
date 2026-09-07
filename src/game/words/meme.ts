@@ -98,7 +98,7 @@ export const MEME: [string, string][] = [
   ["W rizz", "Successo"],
   ["L take", "Opinione"],
   ["Hot take", "Opinione"],
-  ["Unpopular opinion", "Opinione"],
+  ["Unpopular opinion", "Impopolarità"],
   ["Cancel culture", "Boicottaggio"],
   ["Doxxing", "Privacy"],
   ["Catfish", "Inganno"],
