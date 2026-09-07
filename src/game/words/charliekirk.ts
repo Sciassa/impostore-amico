@@ -28,7 +28,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   ["TPUSA", "Acronimo"],
   ["Turning Point Action", "Braccio politico"],
   ["Students for Trump", "Gruppo alleato"],
-  ["Campus Tour", "Tour universitario"],
+  ["Campus Tour", "Ateneo"],
   ["Young Republicans", "Base"],
   ["Conservative Student", "Target"],
 
@@ -59,7 +59,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   ["Trump", "Presidente amato"],
   ["Rally", "Comizio"],
   ["Stop the Steal", "Slogan elezioni"],
-  ["Truth Social", "Social Trump"],
+  ["Truth Social", "Social"],
   ["Fox News", "Canale preferito"],
   ["Tucker Carlson", "Colleaga TV"],
   ["Ben Shapiro", "Amico veloce"],
@@ -73,7 +73,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   ["Twitter", "Social preferito"],
   ["X", "Piattaforma di Elon"],
   ["Elon Musk", "Miliardario amico"],
-  ["Tweet Virale", "Retweet"],
+  ["Tweet Virale", "Diffusione"],
   ["Screenshot", "Ritaglio"],
   ["Meme Template", "Cornice"],
   ["Hashtag", "Cancelletto"],
@@ -82,7 +82,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   ["Commento Ironico", "Sarcasmo"],
 
   // Controversie e cultura online
-  ["Cena con Kanye", "Scandalo cena"],
+  ["Cena con Kanye", "Tavolo"],
   ["Ye", "Rapper ospite"],
   ["Streamer Amico", "Sneako"],
   ["Manosphere", "Ambiente online"],
@@ -102,7 +102,7 @@ export const CHARLIE_KIRK: [string, string][] = [
 
   // Formati e spettacolo
   ["Podcast", "Cuffie"],
-  ["Live Show", "Spettacolo"],
+  ["Spettacolo dal vivo", "Palco"],
   ["Intervista", "Orologio"],
   ["Diretta Streaming", "Buffering"],
   ["Studio Televisivo", "Riflettori"],

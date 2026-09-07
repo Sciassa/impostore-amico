@@ -133,7 +133,7 @@ export const CALCIO: [string, string][] = [
   ["Aperitivo Post Partita", "Chiacchiere"],
   ["Sciarpa", "Colori"],
   ["Coreografia", "Colpo d'Occhio"],
-  ["Fumogeno", "Fumo"],
+  ["Fumogeno", "Curva"],
   ["Petardo", "Botto"],
   ["Trasferta", "Viaggio"],
   ["Amichevole", "Test"],

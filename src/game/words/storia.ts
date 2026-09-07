@@ -12,7 +12,7 @@ export const STORIA: [string, string][] = [
   ["Nerone", "Fiamma"],
   ["Costantino", "Croce"],
   ["Attila", "Pianura"],
-  ["Federico Barbarossa", "Barba"],
+  ["Federico Barbarossa", "Legnano"],
   ["Machiavelli", "Inchiostro"],
   ["Cristoforo Colombo", "Vela"],
   ["Vasco da Gama", "Speziale"],
