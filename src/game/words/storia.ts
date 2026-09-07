@@ -36,7 +36,7 @@ export const STORIA: [string, string][] = [
   ["Gandhi", "Filo"],
   ["Mandela", "Cella"],
   ["Martin Luther King", "Sogno"],
-  ["Kennedy", "Cavalcata"],
+  ["Kennedy", "Corteo"],
   ["Che Guevara", "Berretto"],
   ["Impero Romano", "Legione"],
   ["Impero Bizantino", "Mosaico"],
