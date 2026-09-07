@@ -121,7 +121,7 @@ export const CIBO: [string, string][] = [
   ["Sorbetto", "Freddo"],
   ["Granita", "Brioche"],
   ["Cannolo", "Guscio"],
-  ["Zeppole", "San Giuseppe"],
+  ["Zeppole", "Dolce fritto di festa"],
   ["Bignè", "Crema"],
   ["Millefoglie", "Strati"],
   ["Crostata", "Griglia di pasta"],

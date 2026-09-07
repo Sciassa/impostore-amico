@@ -61,7 +61,7 @@ export const MEDICINA: [string, string][] = [
   ["Ansia", "Batticuore"],
   ["Depressione", "Grigio"],
   ["Amnesia", "Vuoto"],
-  ["Allucinazione", "Fata Morgana"],
+  ["Allucinazione", "Percezione irreale"],
   ["Fobia", "Terrore"],
   ["Chirurgia", "Intervento"],
   ["Medicina", "Facoltà universitaria"],

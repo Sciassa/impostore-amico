@@ -1,5 +1,5 @@
 export const MEME: [string, string][] = [
-  ["Rickroll", "Anni Ottanta"],
+  ["Rickroll", "Scherzo con un video"],
   ["Distracted Boyfriend", "Sguardo"],
   ["Doge", "Wow"],
   ["Grumpy Cat", "Espressione"],
@@ -93,7 +93,7 @@ export const MEME: [string, string][] = [
   ["Chronically online", "Abitudine"],
   ["Terminally online", "Abitudine"],
   ["Extremely online", "Abitudine"],
-  ["Ratio", "Slang Twitter, sconfitta social"],
+  ["Ratio", "Gergo dei social"],
   ["L + ratio", "Sconfitta"],
   ["W rizz", "Successo"],
   ["L take", "Opinione"],

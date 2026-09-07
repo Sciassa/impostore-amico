@@ -79,7 +79,7 @@ export const CALCIO: [string, string][] = [
   ["Dischetto", "Punto della porta"],
   ["Barriera", "Schieramento su punizione"],
   ["Punizione", "Calcio piazzato"],
-  ["Calcio d'Angolo", "Calcio piazzato"],
+  ["Calcio d'Angolo", "Ripresa dalla bandierina"],
   ["Rimessa Laterale", "Ripresa del gioco"],
   ["Retropassaggio", "Passaggio al portiere"],
   ["Marcatura", "Copertura difensiva"],
