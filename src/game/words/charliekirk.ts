@@ -59,7 +59,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   ["Trump", "Presidente amato"],
   ["Rally", "Comizio"],
   ["Stop the Steal", "Slogan elezioni"],
-  ["Truth Social", "Social"],
+  ["Truth Social", "Piattaforma politica"],
   ["Fox News", "Canale preferito"],
   ["Tucker Carlson", "Collega televisivo"],
   ["Ben Shapiro", "Amico veloce"],
