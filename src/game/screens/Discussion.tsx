@@ -1,6 +1,7 @@
 import { MessagesSquare, RotateCw } from "lucide-react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
+import { SpectatorButton } from "./Spectator";
 
 export function Discussion() {
   const { startVoting, errors, alivePlayers, starterName } = useGame();
@@ -32,6 +33,7 @@ export function Discussion() {
       <Button size="lg" onClick={startVoting}>
         TERMINA E VOTA
       </Button>
+      <SpectatorButton />
     </Screen>
   );
 }
