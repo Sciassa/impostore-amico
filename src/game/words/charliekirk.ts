@@ -13,7 +13,7 @@ export const CHARLIE_KIRK: [string, string][] = [
 
   // Meme iconici
   ["Pannolino", "Scandalo universitario"],
-  ["Diaper Gate", "Scandalo pannolini"],
+  ["Diaper Gate", "Scandalo universitario, meme"],
   ["Toilet Paper USA", "Parodia online"],
   ["Microfono Aperto", "Tour campus"],
   ["Gazebo", "Dibattito all'aperto"],
@@ -84,7 +84,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   // Controversie e cultura online
   ["Cena con Kanye", "Tavolo"],
   ["Ye", "Rapper ospite"],
-  ["Streamer Amico", "Sneako"],
+  ["Streamer Amico", "Community online, controverso"],
   ["Manosphere", "Ambiente online"],
   ["Alpha Male", "Autodefinizione"],
   ["Sigma Grindset", "Meme lavoro"],
