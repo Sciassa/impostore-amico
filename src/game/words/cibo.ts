@@ -128,7 +128,7 @@ export const CIBO: [string, string][] = [
   ["Torta", "Candeline"],
   ["Cheesecake", "Biscotto"],
   ["Ciambella", "Buco"],
-  ["Brioche", "Cornetto"],
+  ["Brioche", "Colazione"],
   ["Croissant", "Francia"],
   ["Cornetto", "Bar"],
   ["Biscotti", "Barattolo"],
