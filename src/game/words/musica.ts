@@ -181,7 +181,7 @@ export const MUSICA: [string, string][] = [
   ["Trap", "Genere musicale urbano moderno"],
   ["Drill", "Genere musicale urbano aggressivo"],
   ["Indie", "Genere musicale indipendente"],
-  ["Grunge", "Genere musicale anni 90 Seattle"],
+  ["Grunge", "Genere musicale anni Novanta"],
   ["Hard rock", "Genere musicale rock potente"],
   ["Prog rock", "Genere musicale rock complesso"],
   ["New wave", "Genere musicale anni 80"],

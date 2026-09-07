@@ -61,7 +61,7 @@ export const CHARLIE_KIRK: [string, string][] = [
   ["Stop the Steal", "Slogan elezioni"],
   ["Truth Social", "Social"],
   ["Fox News", "Canale preferito"],
-  ["Tucker Carlson", "Colleaga TV"],
+  ["Tucker Carlson", "Collega televisivo"],
   ["Ben Shapiro", "Amico veloce"],
   ["Candace Owens", "Amica attivista"],
   ["Steven Crowder", "Amico comico"],
@@ -71,7 +71,7 @@ export const CHARLIE_KIRK: [string, string][] = [
 
   // Internet e gergo
   ["Twitter", "Social preferito"],
-  ["X", "Piattaforma di Elon"],
+  ["X", "Piattaforma social"],
   ["Elon Musk", "Miliardario amico"],
   ["Tweet Virale", "Diffusione"],
   ["Screenshot", "Ritaglio"],
