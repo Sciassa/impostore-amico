@@ -214,7 +214,6 @@ export const generateWordDrafts = createServerFn({ method: "POST" })
           batch_id: batchId,
           validation_note: "Validato dalla fase 2 (temperature 0.2)",
         })),
-        { onConflict: "categoria,parola", ignoreDuplicates: true },
       )
       .select("id");
 
