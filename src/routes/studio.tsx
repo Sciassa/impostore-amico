@@ -36,7 +36,7 @@ type Status = "draft" | "approved" | "rejected";
 
 function Studio() {
   const categorie = listCategorie();
-  const [categoria, setCategoria] = useState(categorie[0] ?? "Classiche");
+  const [categoria, setCategoria] = useState<string>(categorie[0] ?? "Classiche");
   const [quantita, setQuantita] = useState(10);
   const [note, setNote] = useState("");
   const [status, setStatus] = useState<Status>("draft");
