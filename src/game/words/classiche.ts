@@ -553,12 +553,4 @@ export const CLASSICHE: [string, string][] = [
   ["Acqua tonica", "Gin"],
   ["Aranciata", "Bolle"],
   ["Gazzosa", "Bollicine"],
-  ["Cappello", "Ombra e riparo"],
-  ["Cravatta", "Sotto il colletto"],
-  ["Fontana", "Piazza del paese"],
-  ["Lenzuolo", "Ora del sonno"],
-  ["Moneta", "Resto del bar"],
-  ["Ponte", "Sponda opposta"],
-  ["Portafoglio", "Cuoio tascabile"],
-  ["Quadro", "Chiodo alla parete"],
 ];
