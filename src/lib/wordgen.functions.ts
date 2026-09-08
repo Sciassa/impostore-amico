@@ -201,7 +201,7 @@ export const generateWordDrafts = createServerFn({ method: "POST" })
     const batchId = crypto.randomUUID();
     const { data: inserted, error } = await supabaseAdmin
       .from("word_drafts")
-      .upsert(
+      .insert(
         finali.map((i) => ({
           parola: i.parola,
           categoria: i.categoria,
