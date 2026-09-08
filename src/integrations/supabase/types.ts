@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      word_drafts: {
+        Row: {
+          batch_id: string | null
+          categoria: string
+          created_at: string
+          difficolta: string
+          environment: string
+          id: string
+          indizi: string[]
+          model: string | null
+          parola: string
+          status: string
+          updated_at: string
+          validation_note: string | null
+        }
+        Insert: {
+          batch_id?: string | null
+          categoria: string
+          created_at?: string
+          difficolta?: string
+          environment?: string
+          id?: string
+          indizi: string[]
+          model?: string | null
+          parola: string
+          status?: string
+          updated_at?: string
+          validation_note?: string | null
+        }
+        Update: {
+          batch_id?: string | null
+          categoria?: string
+          created_at?: string
+          difficolta?: string
+          environment?: string
+          id?: string
+          indizi?: string[]
+          model?: string | null
+          parola?: string
+          status?: string
+          updated_at?: string
+          validation_note?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
