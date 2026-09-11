@@ -475,6 +475,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       dismissFeedback,
       playAgain,
       newGame,
+      cancelGame,
+      markRevealed,
       alivePlayers,
       revealPlayer,
       impostorNames,
@@ -498,6 +500,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     dismissFeedback,
     playAgain,
     newGame,
+    cancelGame,
+    markRevealed,
   ]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
