@@ -76,12 +76,12 @@ export function Setup() {
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           Versione del gioco
         </p>
-        <div className="grid grid-cols-2 gap-1 rounded-2xl bg-white/5 p-1">
-          {(["classica", "liiil"] as const).map((e) => (
+        <div className="grid grid-cols-3 gap-1 rounded-2xl bg-white/5 p-1">
+          {(["classica", "liiil", "liiil_crazy"] as const).map((e) => (
             <button
               key={e}
               onClick={() => setConfig({ engine: e })}
-              className={`relative rounded-xl px-4 py-3 text-sm font-semibold transition ${
+              className={`relative rounded-xl px-2 py-3 text-xs font-semibold transition ${
                 config.engine === e ? "text-primary-foreground" : "text-muted-foreground"
               }`}
             >
@@ -92,20 +92,23 @@ export function Setup() {
                   className="absolute inset-0 rounded-xl gradient-primary"
                 />
               )}
-              <span className="relative flex items-center justify-center gap-1.5">
-                {e === "liiil" && <Sparkles className="h-4 w-4" />}
-                {e === "classica" ? "Classica" : "Modalità LIIIL"}
+              <span className="relative flex items-center justify-center gap-1">
+                {e === "liiil" && <Sparkles className="h-3.5 w-3.5" />}
+                {e === "liiil_crazy" && <Wand2 className="h-3.5 w-3.5" />}
+                {e === "classica" ? "Classica" : e === "liiil" ? "LIIIL" : "LIIIL CRAZY"}
               </span>
             </button>
           ))}
         </div>
         <p className="text-xs text-muted-foreground">
           {config.engine === "classica"
-            ? "Suggerimenti scritti a mano, sempre gli stessi."
-            : "Suggerimenti creati al momento dall'intelligenza artificiale."}
+            ? "Parole e suggerimenti scritti a mano, sempre gli stessi."
+            : config.engine === "liiil"
+              ? "Parole dalle nostre categorie, indizio creato al momento dall'IA."
+              : "Parola E indizio creati al momento dall'IA, da una categoria a sorpresa."}
         </p>
 
-        {config.engine === "liiil" && (
+        {config.engine !== "classica" && (
           <div className="space-y-2 pt-1">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Difficoltà indizio
