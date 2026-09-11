@@ -1,52 +1,77 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Eye, Fingerprint, ShieldCheck, Skull, Smartphone, VenetianMask } from "lucide-react";
+import { Check, Eye, Fingerprint, ShieldCheck, Skull, VenetianMask, X } from "lucide-react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
-import { Button, Screen, Title } from "../ui";
+import { Button, Panel, Screen, Title } from "../ui";
 
 export function Reveal() {
-  const { revealPlayer, revealIndex, players, word, nextReveal, impostorNames } = useGame();
-  const [stage, setStage] = useState<"pass" | "role">("pass");
+  const { players, word, revealedIds, markRevealed, impostorNames, cancelGame } = useGame();
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [holding, setHolding] = useState(false);
   const [seen, setSeen] = useState(false);
 
-  if (!revealPlayer || !word) return null;
+  if (!word) return null;
 
-  const advance = () => {
-    setStage("pass");
-    setHolding(false);
-    setSeen(false);
-    nextReveal();
-  };
+  const active = players.find((p) => p.id === activeId) ?? null;
 
   const startHold = () => {
     setHolding(true);
     setSeen(true);
   };
 
+  const done = () => {
+    if (active) markRevealed(active.id);
+    setActiveId(null);
+    setHolding(false);
+    setSeen(false);
+  };
+
   return (
     <Screen>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-        Giocatore {revealIndex + 1} di {players.length}
-      </p>
-
       <AnimatePresence mode="wait">
-        {stage === "pass" ? (
+        {!active ? (
           <motion.div
-            key="pass"
+            key="grid"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.35 }}
-            className="flex flex-1 flex-col justify-center gap-6"
+            className="flex flex-1 flex-col gap-6"
           >
-            <Smartphone className="mx-auto h-12 w-12 text-primary" />
-            <Title>Passa il telefono a {revealPlayer.name}</Title>
+            <Title eyebrow={`${revealedIds.length} di ${players.length} hanno letto`}>
+              Tocca il tuo nome
+            </Title>
             <p className="-mt-3 text-sm text-muted-foreground">
-              Nessun altro deve guardare lo schermo.
+              In qualsiasi ordine. Ognuno apre solo il proprio riquadro.
             </p>
-            <Button size="lg" onClick={() => setStage("role")}>
-              Sono io
+
+            <Panel>
+              <div className="grid grid-cols-2 gap-3">
+                {players.map((p) => {
+                  const readDone = revealedIds.includes(p.id);
+                  return (
+                    <button
+                      key={p.id}
+                      disabled={readDone}
+                      onClick={() => setActiveId(p.id)}
+                      className={`relative flex min-h-20 items-center justify-center rounded-2xl border px-3 py-4 text-center font-semibold transition active:scale-95 ${
+                        readDone
+                          ? "border-success/40 bg-success/10 text-muted-foreground"
+                          : "border-border bg-white/5 hover:border-primary/60 hover:bg-white/10"
+                      }`}
+                    >
+                      {readDone && (
+                        <Check className="absolute right-2 top-2 h-4 w-4 text-success" />
+                      )}
+                      {p.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </Panel>
+
+            <Button variant="ghost" onClick={cancelGame}>
+              <X className="h-4 w-4" /> Annulla partita
             </Button>
           </motion.div>
         ) : (
@@ -58,7 +83,7 @@ export function Reveal() {
             transition={{ duration: 0.35 }}
             className="flex flex-1 flex-col justify-center gap-5"
           >
-            <Title eyebrow={revealPlayer.name}>Tieni premuto per leggere</Title>
+            <Title eyebrow={active.name}>Tieni premuto per leggere</Title>
 
             <div
               onMouseDown={startHold}
@@ -91,7 +116,7 @@ export function Reveal() {
                   transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                   className="flex w-full flex-col items-center gap-4"
                 >
-                  {revealPlayer.role === "impostore" ? (
+                  {active.role === "impostore" ? (
                     <>
                       <span className="inline-flex items-center gap-2 rounded-full border border-destructive/50 bg-destructive/15 px-5 py-2 text-base font-extrabold uppercase tracking-[0.18em] text-destructive">
                         <Skull className="h-5 w-5" /> Sei l'Impostore
@@ -101,7 +126,7 @@ export function Reveal() {
                         È solo un indizio vago. Non conosci gli altri impostori.
                       </p>
                     </>
-                  ) : revealPlayer.role === "spia" ? (
+                  ) : active.role === "spia" ? (
                     <>
                       <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/50 bg-amber-400/10 px-5 py-2 text-base font-extrabold uppercase tracking-[0.18em] text-amber-300">
                         <VenetianMask className="h-5 w-5" /> Agente Segreto
@@ -140,7 +165,7 @@ export function Reveal() {
               )}
             </div>
 
-            <Button size="lg" variant={seen ? "primary" : "outline"} onClick={advance}>
+            <Button size="lg" variant={seen ? "primary" : "outline"} onClick={done}>
               <Eye className="h-4 w-4" /> Ho capito, prosegui
             </Button>
           </motion.div>

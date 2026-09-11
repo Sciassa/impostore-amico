@@ -1,10 +1,10 @@
-import { MessagesSquare, RotateCw } from "lucide-react";
+import { MessagesSquare, RotateCw, X } from "lucide-react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
 import { SpectatorButton } from "./Spectator";
 
 export function Discussion() {
-  const { startVoting, errors, alivePlayers, starterName } = useGame();
+  const { startVoting, errors, alivePlayers, starterName, cancelGame } = useGame();
   return (
     <Screen className="justify-center">
       <MessagesSquare className="mx-auto h-12 w-12 text-primary" />
@@ -34,6 +34,9 @@ export function Discussion() {
         TERMINA E VOTA
       </Button>
       <SpectatorButton />
+      <Button variant="ghost" onClick={cancelGame}>
+        <X className="h-4 w-4" /> Annulla partita
+      </Button>
     </Screen>
   );
 }

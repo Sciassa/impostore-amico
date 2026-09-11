@@ -54,6 +54,7 @@ interface GameState {
   impostorTotal: number;
   spyActive: boolean;
   revealIndex: number;
+  revealedIds: string[];
   errors: number;
   impostorsKilled: number;
   feedback: Feedback | null;
@@ -83,6 +84,8 @@ interface GameApi extends GameState {
   dismissFeedback: () => void;
   playAgain: () => void;
   newGame: () => void;
+  cancelGame: () => void;
+  markRevealed: (id: string) => void;
   alivePlayers: Player[];
   revealPlayer: Player | null;
   impostorNames: string[];
@@ -99,6 +102,7 @@ const initial = (): GameState => ({
   impostorTotal: 0,
   spyActive: false,
   revealIndex: 0,
+  revealedIds: [],
   errors: 0,
   impostorsKilled: 0,
   feedback: null,
@@ -201,6 +205,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       word,
       phase: "reveal",
       revealIndex: 0,
+      revealedIds: [],
       errors: 0,
       impostorsKilled: 0,
       feedback: null,
@@ -217,6 +222,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const next = prev.revealIndex + 1;
       if (next >= prev.players.length) return { ...prev, phase: "discussion", revealIndex: 0 };
       return { ...prev, revealIndex: next };
+    });
+  }, []);
+
+  const markRevealed = useCallback((id: string) => {
+    set((prev) => {
+      const revealedIds = prev.revealedIds.includes(id) ? prev.revealedIds : [...prev.revealedIds, id];
+      if (revealedIds.length >= prev.players.length) {
+        return { ...prev, revealedIds, phase: "discussion" as Phase };
+      }
+      return { ...prev, revealedIds };
     });
   }, []);
 
@@ -427,7 +442,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     set((prev) => ({ ...prev, phase: "setup", ending: null, feedback: null }));
   }, []);
 
-  const newGame = useCallback(() => set(initial()), []);
+  const newGame = useCallback(
+    () => set((prev) => ({ ...initial(), roster: prev.roster, config: prev.config })),
+    [],
+  );
+
+  const cancelGame = useCallback(
+    () => set((prev) => ({ ...initial(), roster: prev.roster, config: prev.config })),
+    [],
+  );
 
   const value = useMemo<GameApi>(() => {
     const alivePlayers = s.players.filter((p) => p.alive);
@@ -452,6 +475,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       dismissFeedback,
       playAgain,
       newGame,
+      cancelGame,
+      markRevealed,
       alivePlayers,
       revealPlayer,
       impostorNames,
@@ -475,6 +500,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     dismissFeedback,
     playAgain,
     newGame,
+    cancelGame,
+    markRevealed,
   ]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
