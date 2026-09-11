@@ -10,6 +10,8 @@ import {
   type Mode,
   type Player,
 } from "./engine";
+import { useServerFn } from "@tanstack/react-start";
+import { generateClues } from "@/lib/ai-clues.functions";
 import type { Category, WordEntry } from "./words";
 
 
@@ -51,6 +53,8 @@ interface GameState {
   revengeId: string | null;
   starterName: string | null;
   votingRound: number;
+  aiLoading: boolean;
+  aiError: string | null;
 }
 
 interface GameApi extends GameState {
@@ -62,7 +66,7 @@ interface GameApi extends GameState {
   toggleCategory: (c: Category) => void;
   goSetup: () => void;
   goLobby: () => void;
-  startGame: () => void;
+  startGame: () => void | Promise<void>;
   nextReveal: () => void;
   startVoting: () => void;
   votePlayer: (id: string) => void;
@@ -94,6 +98,8 @@ const initial = (): GameState => ({
   revengeId: null,
   starterName: null,
   votingRound: 0,
+  aiLoading: false,
+  aiError: null,
 });
 
 export function GameProvider({ children }: { children: ReactNode }) {
