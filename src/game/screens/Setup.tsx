@@ -1,4 +1,4 @@
-import { ArrowLeft, Eye, Minus, Plus } from "lucide-react";
+import { ArrowLeft, Eye, Minus, Plus, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
@@ -40,12 +40,27 @@ function Toggle({
 }
 
 export function Setup() {
-  const { roster, config, setConfig, setWeight, setMode, toggleCategory, goLobby, startGame } =
-    useGame();
+  const {
+    roster,
+    config,
+    setConfig,
+    setWeight,
+    setMode,
+    toggleCategory,
+    goLobby,
+    startGame,
+    aiLoading,
+    aiError,
+  } = useGame();
   const total = roster.length;
 
   const sum = config.weights.reduce((a, b) => a + Math.max(0, b || 0), 0);
 
+  const difficulties = [
+    { id: "facile", label: "Facile" },
+    { id: "medio", label: "Medio" },
+    { id: "difficile", label: "Difficile" },
+  ] as const;
 
   return (
     <Screen>
@@ -56,6 +71,64 @@ export function Setup() {
         <ArrowLeft className="h-4 w-4" /> Giocatori
       </button>
       <Title eyebrow={`${total} giocatori`}>Setup partita</Title>
+
+      <Panel className="space-y-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          Versione del gioco
+        </p>
+        <div className="grid grid-cols-2 gap-1 rounded-2xl bg-white/5 p-1">
+          {(["classica", "liiil"] as const).map((e) => (
+            <button
+              key={e}
+              onClick={() => setConfig({ engine: e })}
+              className={`relative rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                config.engine === e ? "text-primary-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {config.engine === e && (
+                <motion.span
+                  layoutId="engine-pill"
+                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  className="absolute inset-0 rounded-xl gradient-primary"
+                />
+              )}
+              <span className="relative flex items-center justify-center gap-1.5">
+                {e === "liiil" && <Sparkles className="h-4 w-4" />}
+                {e === "classica" ? "Classica" : "Modalità LIIIL"}
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          {config.engine === "classica"
+            ? "Suggerimenti scritti a mano, sempre gli stessi."
+            : "Suggerimenti creati al momento dall'intelligenza artificiale."}
+        </p>
+
+        {config.engine === "liiil" && (
+          <div className="space-y-2 pt-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Difficoltà indizio
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {difficulties.map((d) => (
+                <button
+                  key={d.id}
+                  onClick={() => setConfig({ difficulty: d.id })}
+                  className={`rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                    config.difficulty === d.id
+                      ? "border-transparent gradient-primary text-primary-foreground"
+                      : "border-border bg-white/5 text-muted-foreground"
+                  }`}
+                >
+                  {d.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </Panel>
+
 
       <div className="glass grid grid-cols-2 gap-1 rounded-2xl p-1">
         {(["fisso", "casuale"] as const).map((m) => (
@@ -192,8 +265,14 @@ export function Setup() {
         </div>
       </Panel>
 
-      <Button size="lg" onClick={startGame} disabled={config.mode === "casuale" && sum === 0}>
-        Distribuisci i ruoli
+      {aiError && <p className="text-center text-xs text-destructive">{aiError}</p>}
+
+      <Button
+        size="lg"
+        onClick={() => void startGame()}
+        disabled={aiLoading || (config.mode === "casuale" && sum === 0)}
+      >
+        {aiLoading ? "L'IA sta scrivendo l'indizio…" : "Distribuisci i ruoli"}
       </Button>
     </Screen>
   );

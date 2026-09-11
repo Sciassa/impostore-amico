@@ -11,12 +11,18 @@ export interface Player {
 
 export type Mode = "fisso" | "casuale";
 
+export type Engine = "classica" | "liiil";
+
+export type Difficulty = "facile" | "medio" | "difficile";
+
 export interface GameConfig {
   mode: Mode;
   fixedImpostors: number;
   weights: number[]; // index = numero di impostori, valore 0-100
   spyEnabled: boolean;
   categories: Category[];
+  engine: Engine;
+  difficulty: Difficulty;
 }
 
 export const defaultConfig = (): GameConfig => ({
@@ -25,6 +31,8 @@ export const defaultConfig = (): GameConfig => ({
   weights: [],
   spyEnabled: false,
   categories: [...CATEGORIES],
+  engine: "classica",
+  difficulty: "medio",
 });
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
