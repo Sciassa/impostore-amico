@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   buildRound,
   defaultConfig,
@@ -104,6 +112,9 @@ const initial = (): GameState => ({
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [s, set] = useState<GameState>(initial);
+  const sRef = useRef(s);
+  sRef.current = s;
+  const callGenerateClues = useServerFn(generateClues);
 
   const patch = useCallback((p: Partial<GameState>) => set((prev) => ({ ...prev, ...p })), []);
 
