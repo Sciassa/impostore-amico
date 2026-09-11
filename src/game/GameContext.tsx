@@ -20,6 +20,8 @@ import {
 } from "./engine";
 import { useServerFn } from "@tanstack/react-start";
 import { generateClues } from "@/lib/ai-clues.functions";
+import { generateWord } from "@/lib/ai-word.functions";
+import { CRAZY_CATEGORIES } from "./crazyCategories";
 import type { Category, WordEntry } from "./words";
 
 
