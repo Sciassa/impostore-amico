@@ -1,8 +1,10 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Check, Eye, Fingerprint, ShieldCheck, Skull, VenetianMask, X } from "lucide-react";
+import { Check, Eye, Fingerprint, Hand, ShieldCheck, Skull, VenetianMask } from "lucide-react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
+import { CancelGameButton } from "./CancelGame";
+
 
 export function Reveal() {
   const { players, word, revealedIds, markRevealed, impostorNames, cancelGame } = useGame();
