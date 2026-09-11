@@ -265,8 +265,14 @@ export function Setup() {
         </div>
       </Panel>
 
-      <Button size="lg" onClick={startGame} disabled={config.mode === "casuale" && sum === 0}>
-        Distribuisci i ruoli
+      {aiError && <p className="text-center text-xs text-destructive">{aiError}</p>}
+
+      <Button
+        size="lg"
+        onClick={() => void startGame()}
+        disabled={aiLoading || (config.mode === "casuale" && sum === 0)}
+      >
+        {aiLoading ? "L'IA sta scrivendo l'indizio…" : "Distribuisci i ruoli"}
       </Button>
     </Screen>
   );
