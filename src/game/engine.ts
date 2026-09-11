@@ -1,3 +1,4 @@
+import { CRAZY_CATEGORIES } from "./crazyCategories";
 import { CATEGORIES, WORDS, type Category, type WordEntry } from "./words";
 
 export type Role = "civile" | "impostore" | "spia";
@@ -11,7 +12,7 @@ export interface Player {
 
 export type Mode = "fisso" | "casuale";
 
-export type Engine = "classica" | "liiil";
+export type Engine = "classica" | "liiil" | "liiil_crazy";
 
 export type Difficulty = "facile" | "medio" | "difficile";
 
@@ -21,6 +22,7 @@ export interface GameConfig {
   weights: number[]; // index = numero di impostori, valore 0-100
   spyEnabled: boolean;
   categories: Category[];
+  crazyCategories: string[];
   engine: Engine;
   difficulty: Difficulty;
 }
@@ -31,6 +33,7 @@ export const defaultConfig = (): GameConfig => ({
   weights: [],
   spyEnabled: false,
   categories: [...CATEGORIES],
+  crazyCategories: [...CRAZY_CATEGORIES],
   engine: "classica",
   difficulty: "medio",
 });
