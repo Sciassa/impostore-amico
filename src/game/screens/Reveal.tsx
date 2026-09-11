@@ -1,11 +1,13 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Check, Eye, Fingerprint, ShieldCheck, Skull, VenetianMask, X } from "lucide-react";
+import { Check, Eye, Fingerprint, Hand, ShieldCheck, Skull, VenetianMask } from "lucide-react";
 import { useState } from "react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
+import { CancelGameButton } from "./CancelGame";
+
 
 export function Reveal() {
-  const { players, word, revealedIds, markRevealed, impostorNames, cancelGame } = useGame();
+  const { players, word, revealedIds, markRevealed, impostorNames } = useGame();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [holding, setHolding] = useState(false);
   const [seen, setSeen] = useState(false);
@@ -38,41 +40,89 @@ export function Reveal() {
             transition={{ duration: 0.35 }}
             className="flex flex-1 flex-col gap-6"
           >
-            <Title eyebrow={`${revealedIds.length} di ${players.length} hanno letto`}>
-              Tocca il tuo nome
-            </Title>
-            <p className="-mt-3 text-sm text-muted-foreground">
-              In qualsiasi ordine. Ognuno apre solo il proprio riquadro.
-            </p>
+            <div className="space-y-1">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Distribuzione ruoli
+              </p>
+              <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
+                Tocca il <span className="text-gradient">tuo nome</span>
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                In qualsiasi ordine. Nessun altro deve guardare lo schermo.
+              </p>
+            </div>
 
-            <Panel>
+            <Panel className="space-y-4">
+              <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span>Hanno letto</span>
+                <span className="text-foreground">
+                  {revealedIds.length} / {players.length}
+                </span>
+              </div>
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <motion.div
+                  animate={{ width: `${(revealedIds.length / Math.max(1, players.length)) * 100}%` }}
+                  transition={{ type: "spring", stiffness: 200, damping: 28 }}
+                  className="h-full rounded-full gradient-primary"
+                />
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
-                {players.map((p) => {
+                {players.map((p, i) => {
                   const readDone = revealedIds.includes(p.id);
                   return (
-                    <button
+                    <motion.button
                       key={p.id}
+                      layout
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.04, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      whileTap={{ scale: 0.95 }}
                       disabled={readDone}
                       onClick={() => setActiveId(p.id)}
-                      className={`relative flex min-h-20 items-center justify-center rounded-2xl border px-3 py-4 text-center font-semibold transition active:scale-95 ${
+                      className={`relative flex min-h-24 flex-col items-center justify-center gap-2 overflow-hidden rounded-3xl border p-4 text-center transition ${
                         readDone
-                          ? "border-success/40 bg-success/10 text-muted-foreground"
-                          : "border-border bg-white/5 hover:border-primary/60 hover:bg-white/10"
+                          ? "border-success/40 bg-success/10"
+                          : "border-white/12 bg-white/5 hover:border-primary/60 hover:bg-white/10 hover:shadow-[0_0_28px_-8px_rgba(168,85,247,0.7)]"
                       }`}
                     >
-                      {readDone && (
-                        <Check className="absolute right-2 top-2 h-4 w-4 text-success" />
+                      {!readDone && (
+                        <span className="pointer-events-none absolute -right-6 -top-8 h-20 w-20 rounded-full bg-primary/25 blur-2xl" />
                       )}
-                      {p.name}
-                    </button>
+                      <span
+                        className={`relative flex h-9 w-9 items-center justify-center rounded-full text-sm font-extrabold ${
+                          readDone
+                            ? "bg-success/20 text-success"
+                            : "gradient-primary text-primary-foreground"
+                        }`}
+                      >
+                        {readDone ? (
+                          <Check className="h-4 w-4" />
+                        ) : (
+                          p.name.charAt(0).toUpperCase()
+                        )}
+                      </span>
+                      <span
+                        className={`relative text-sm font-bold leading-tight ${
+                          readDone ? "text-muted-foreground line-through" : ""
+                        }`}
+                      >
+                        {p.name}
+                      </span>
+                      <span className="relative text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {readDone ? "Fatto" : "Tocca"}
+                      </span>
+                    </motion.button>
                   );
                 })}
               </div>
             </Panel>
 
-            <Button variant="ghost" onClick={cancelGame}>
-              <X className="h-4 w-4" /> Annulla partita
-            </Button>
+            <p className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <Hand className="h-3.5 w-3.5" /> Poi si tiene premuto per leggere il ruolo
+            </p>
+
+            <CancelGameButton />
           </motion.div>
         ) : (
           <motion.div

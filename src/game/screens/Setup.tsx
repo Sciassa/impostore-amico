@@ -1,8 +1,9 @@
-import { ArrowLeft, Eye, Minus, Plus, Sparkles } from "lucide-react";
+import { ArrowLeft, Eye, Minus, Plus, Sparkles, Wand2 } from "lucide-react";
 import { motion } from "motion/react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
 import { CATEGORIES } from "../words";
+import { CRAZY_CATEGORIES } from "../crazyCategories";
 
 function Toggle({
   checked,
@@ -53,6 +54,7 @@ export function Setup() {
     aiError,
   } = useGame();
   const total = roster.length;
+  const crazy = config.engine === "liiil_crazy";
 
   const sum = config.weights.reduce((a, b) => a + Math.max(0, b || 0), 0);
 
@@ -76,12 +78,12 @@ export function Setup() {
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           Versione del gioco
         </p>
-        <div className="grid grid-cols-2 gap-1 rounded-2xl bg-white/5 p-1">
-          {(["classica", "liiil"] as const).map((e) => (
+        <div className="grid grid-cols-3 gap-1 rounded-2xl bg-white/5 p-1">
+          {(["classica", "liiil", "liiil_crazy"] as const).map((e) => (
             <button
               key={e}
               onClick={() => setConfig({ engine: e })}
-              className={`relative rounded-xl px-4 py-3 text-sm font-semibold transition ${
+              className={`relative rounded-xl px-2 py-3 text-xs font-semibold transition ${
                 config.engine === e ? "text-primary-foreground" : "text-muted-foreground"
               }`}
             >
@@ -92,20 +94,23 @@ export function Setup() {
                   className="absolute inset-0 rounded-xl gradient-primary"
                 />
               )}
-              <span className="relative flex items-center justify-center gap-1.5">
-                {e === "liiil" && <Sparkles className="h-4 w-4" />}
-                {e === "classica" ? "Classica" : "Modalità LIIIL"}
+              <span className="relative flex items-center justify-center gap-1">
+                {e === "liiil" && <Sparkles className="h-3.5 w-3.5" />}
+                {e === "liiil_crazy" && <Wand2 className="h-3.5 w-3.5" />}
+                {e === "classica" ? "Classica" : e === "liiil" ? "LIIIL" : "LIIIL CRAZY"}
               </span>
             </button>
           ))}
         </div>
         <p className="text-xs text-muted-foreground">
           {config.engine === "classica"
-            ? "Suggerimenti scritti a mano, sempre gli stessi."
-            : "Suggerimenti creati al momento dall'intelligenza artificiale."}
+            ? "Parole e suggerimenti scritti a mano, sempre gli stessi."
+            : config.engine === "liiil"
+              ? "Parole dalle nostre categorie, indizio creato al momento dall'IA."
+              : "Parola E indizio creati al momento dall'IA, da una categoria a sorpresa."}
         </p>
 
-        {config.engine === "liiil" && (
+        {config.engine !== "classica" && (
           <div className="space-y-2 pt-1">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Difficoltà indizio
@@ -228,29 +233,56 @@ export function Setup() {
         <div className="pt-1">
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              <Eye className="h-3.5 w-3.5" /> Categorie
+              <Eye className="h-3.5 w-3.5" /> {crazy ? "Categorie CRAZY" : "Categorie"}
             </p>
             <button
               onClick={() =>
-                setConfig({
-                  categories:
-                    config.categories.length === CATEGORIES.length ? [] : [...CATEGORIES],
-                })
+                crazy
+                  ? setConfig({
+                      crazyCategories:
+                        config.crazyCategories.length === CRAZY_CATEGORIES.length
+                          ? []
+                          : [...CRAZY_CATEGORIES],
+                    })
+                  : setConfig({
+                      categories:
+                        config.categories.length === CATEGORIES.length ? [] : [...CATEGORIES],
+                    })
               }
               className="text-xs font-semibold text-primary transition hover:brightness-125"
             >
-              {config.categories.length === CATEGORIES.length
+              {(crazy
+                ? config.crazyCategories.length === CRAZY_CATEGORIES.length
+                : config.categories.length === CATEGORIES.length)
                 ? "Deseleziona tutto"
                 : "Seleziona tutto"}
             </button>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((c) => {
-              const on = config.categories.includes(c);
+          {crazy && (
+            <p className="mb-2 text-xs text-muted-foreground">
+              Ogni partita pesca una di queste categorie e l'IA inventa la parola: solo italiano
+              corrente, niente riferimenti americani.
+            </p>
+          )}
+          <div
+            className={`flex flex-wrap gap-2 ${crazy ? "max-h-64 overflow-y-auto pr-1" : ""}`}
+          >
+            {(crazy ? CRAZY_CATEGORIES : CATEGORIES).map((c) => {
+              const on = crazy
+                ? config.crazyCategories.includes(c)
+                : config.categories.includes(c as (typeof CATEGORIES)[number]);
               return (
                 <button
                   key={c}
-                  onClick={() => toggleCategory(c)}
+                  onClick={() =>
+                    crazy
+                      ? setConfig({
+                          crazyCategories: config.crazyCategories.includes(c)
+                            ? config.crazyCategories.filter((x) => x !== c)
+                            : [...config.crazyCategories, c],
+                        })
+                      : toggleCategory(c as (typeof CATEGORIES)[number])
+                  }
                   className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
                     on
                       ? "border-transparent gradient-primary text-primary-foreground"
@@ -272,7 +304,11 @@ export function Setup() {
         onClick={() => void startGame()}
         disabled={aiLoading || (config.mode === "casuale" && sum === 0)}
       >
-        {aiLoading ? "L'IA sta scrivendo l'indizio…" : "Distribuisci i ruoli"}
+        {aiLoading
+          ? crazy
+            ? "L'IA sta inventando parola e indizio…"
+            : "L'IA sta scrivendo l'indizio…"
+          : "Distribuisci i ruoli"}
       </Button>
     </Screen>
   );

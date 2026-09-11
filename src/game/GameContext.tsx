@@ -20,6 +20,8 @@ import {
 } from "./engine";
 import { useServerFn } from "@tanstack/react-start";
 import { generateClues } from "@/lib/ai-clues.functions";
+import { generateWord } from "@/lib/ai-word.functions";
+import { CRAZY_CATEGORIES } from "./crazyCategories";
 import type { Category, WordEntry } from "./words";
 
 
@@ -119,6 +121,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const sRef = useRef(s);
   sRef.current = s;
   const callGenerateClues = useServerFn(generateClues);
+  const callGenerateWord = useServerFn(generateWord);
+  const recentWords = useRef<string[]>([]);
 
   const patch = useCallback((p: Partial<GameState>) => set((prev) => ({ ...prev, ...p })), []);
 
@@ -183,20 +187,40 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const starter = round.players[Math.floor(Math.random() * round.players.length)];
 
     let word = round.word;
-    if (config.engine === "liiil") {
+    if (config.engine === "liiil" || config.engine === "liiil_crazy") {
       set((prev) => ({ ...prev, aiLoading: true, aiError: null }));
+      let aiError: string | null = null;
+
+      if (config.engine === "liiil_crazy") {
+        const pool = config.crazyCategories.length ? config.crazyCategories : CRAZY_CATEGORIES;
+        const category = pool[Math.floor(Math.random() * pool.length)] as string;
+        try {
+          const res = await callGenerateWord({
+            data: { category, exclude: recentWords.current },
+          });
+          recentWords.current = [res.word, ...recentWords.current].slice(0, 30);
+          word = {
+            categoria: round.word.categoria,
+            parola_esatta: res.word,
+            suggerimento_vago: round.word.suggerimento_vago,
+          };
+        } catch {
+          aiError = "Parola IA non disponibile: uso una parola classica.";
+        }
+      }
+
       try {
         const res = await callGenerateClues({
-          data: { word: round.word.parola_esatta, difficulty: config.difficulty },
+          data: { word: word.parola_esatta, difficulty: config.difficulty },
         });
-        word = { ...round.word, suggerimento_vago: res.clue };
+        word = { ...word, suggerimento_vago: res.clue };
       } catch {
-        set((prev) => ({
-          ...prev,
-          aiLoading: false,
-          aiError: "Indizio IA non disponibile: uso il suggerimento classico.",
-        }));
+        aiError = aiError
+          ? "Servizio IA non disponibile: partita in modalità classica."
+          : "Indizio IA non disponibile: uso il suggerimento classico.";
       }
+
+      if (aiError) set((prev) => ({ ...prev, aiLoading: false, aiError }));
     }
 
     set((prev) => ({
@@ -215,7 +239,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       votingRound: 0,
       aiLoading: false,
     }));
-  }, [callGenerateClues]);
+  }, [callGenerateClues, callGenerateWord]);
 
   const nextReveal = useCallback(() => {
     set((prev) => {
