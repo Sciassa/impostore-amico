@@ -1,8 +1,9 @@
-import { ArrowLeft, Eye, Minus, Plus, Sparkles } from "lucide-react";
+import { ArrowLeft, Eye, Minus, Plus, Sparkles, Wand2 } from "lucide-react";
 import { motion } from "motion/react";
 import { useGame } from "../GameContext";
 import { Button, Panel, Screen, Title } from "../ui";
 import { CATEGORIES } from "../words";
+import { CRAZY_CATEGORIES } from "../crazyCategories";
 
 function Toggle({
   checked,
