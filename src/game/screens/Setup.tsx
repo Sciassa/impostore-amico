@@ -54,6 +54,7 @@ export function Setup() {
     aiError,
   } = useGame();
   const total = roster.length;
+  const crazy = config.engine === "liiil_crazy";
 
   const sum = config.weights.reduce((a, b) => a + Math.max(0, b || 0), 0);
 
@@ -303,7 +304,11 @@ export function Setup() {
         onClick={() => void startGame()}
         disabled={aiLoading || (config.mode === "casuale" && sum === 0)}
       >
-        {aiLoading ? "L'IA sta scrivendo l'indizio…" : "Distribuisci i ruoli"}
+        {aiLoading
+          ? crazy
+            ? "L'IA sta inventando parola e indizio…"
+            : "L'IA sta scrivendo l'indizio…"
+          : "Distribuisci i ruoli"}
       </Button>
     </Screen>
   );
