@@ -239,7 +239,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       votingRound: 0,
       aiLoading: false,
     }));
-  }, [callGenerateClues]);
+  }, [callGenerateClues, callGenerateWord]);
 
   const nextReveal = useCallback(() => {
     set((prev) => {
