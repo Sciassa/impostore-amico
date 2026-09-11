@@ -232,29 +232,56 @@ export function Setup() {
         <div className="pt-1">
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              <Eye className="h-3.5 w-3.5" /> Categorie
+              <Eye className="h-3.5 w-3.5" /> {crazy ? "Categorie CRAZY" : "Categorie"}
             </p>
             <button
               onClick={() =>
-                setConfig({
-                  categories:
-                    config.categories.length === CATEGORIES.length ? [] : [...CATEGORIES],
-                })
+                crazy
+                  ? setConfig({
+                      crazyCategories:
+                        config.crazyCategories.length === CRAZY_CATEGORIES.length
+                          ? []
+                          : [...CRAZY_CATEGORIES],
+                    })
+                  : setConfig({
+                      categories:
+                        config.categories.length === CATEGORIES.length ? [] : [...CATEGORIES],
+                    })
               }
               className="text-xs font-semibold text-primary transition hover:brightness-125"
             >
-              {config.categories.length === CATEGORIES.length
+              {(crazy
+                ? config.crazyCategories.length === CRAZY_CATEGORIES.length
+                : config.categories.length === CATEGORIES.length)
                 ? "Deseleziona tutto"
                 : "Seleziona tutto"}
             </button>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((c) => {
-              const on = config.categories.includes(c);
+          {crazy && (
+            <p className="mb-2 text-xs text-muted-foreground">
+              Ogni partita pesca una di queste categorie e l'IA inventa la parola: solo italiano
+              corrente, niente riferimenti americani.
+            </p>
+          )}
+          <div
+            className={`flex flex-wrap gap-2 ${crazy ? "max-h-64 overflow-y-auto pr-1" : ""}`}
+          >
+            {(crazy ? CRAZY_CATEGORIES : CATEGORIES).map((c) => {
+              const on = crazy
+                ? config.crazyCategories.includes(c)
+                : config.categories.includes(c as (typeof CATEGORIES)[number]);
               return (
                 <button
                   key={c}
-                  onClick={() => toggleCategory(c)}
+                  onClick={() =>
+                    crazy
+                      ? setConfig({
+                          crazyCategories: config.crazyCategories.includes(c)
+                            ? config.crazyCategories.filter((x) => x !== c)
+                            : [...config.crazyCategories, c],
+                        })
+                      : toggleCategory(c as (typeof CATEGORIES)[number])
+                  }
                   className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
                     on
                       ? "border-transparent gradient-primary text-primary-foreground"
