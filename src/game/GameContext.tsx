@@ -162,25 +162,44 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const goLobby = useCallback(() => patch({ phase: "lobby" }), [patch]);
 
-  const startGame = useCallback(() => {
-    set((prev) => {
-      const round = buildRound(prev.roster, prev.config);
-      const starter = round.players[Math.floor(Math.random() * round.players.length)];
-      return {
-        ...prev,
-        ...round,
-        phase: "reveal",
-        revealIndex: 0,
-        errors: 0,
-        impostorsKilled: 0,
-        feedback: null,
-        ending: null,
-        revengeId: null,
-        starterName: starter?.name ?? null,
-        votingRound: 0,
-      };
-    });
-  }, []);
+  const startGame = useCallback(async () => {
+    const config = sRef.current.config;
+    const round = buildRound(sRef.current.roster, config);
+    const starter = round.players[Math.floor(Math.random() * round.players.length)];
+
+    let word = round.word;
+    if (config.engine === "liiil") {
+      set((prev) => ({ ...prev, aiLoading: true, aiError: null }));
+      try {
+        const res = await callGenerateClues({
+          data: { word: round.word.parola_esatta, difficulty: config.difficulty },
+        });
+        word = { ...round.word, suggerimento_vago: res.clue };
+      } catch {
+        set((prev) => ({
+          ...prev,
+          aiLoading: false,
+          aiError: "Indizio IA non disponibile: uso il suggerimento classico.",
+        }));
+      }
+    }
+
+    set((prev) => ({
+      ...prev,
+      ...round,
+      word,
+      phase: "reveal",
+      revealIndex: 0,
+      errors: 0,
+      impostorsKilled: 0,
+      feedback: null,
+      ending: null,
+      revengeId: null,
+      starterName: starter?.name ?? null,
+      votingRound: 0,
+      aiLoading: false,
+    }));
+  }, [callGenerateClues]);
 
   const nextReveal = useCallback(() => {
     set((prev) => {
